@@ -6,6 +6,16 @@
       "scopes": [
         "com.fluid"
       ]
+    },
+    {
+      "name": "package.openupm.com",
+      "url": "https://package.openupm.com",
+      "scopes": [
+        "com.aarthificial.reanimation",
+        "com.dbrizov.naughtyattributes",
+        "com.mrgvsv.pixel-contour",
+        "com.openupm"
+      ]
     }
   ],
   "dependencies": {
@@ -55,6 +65,9 @@
     "com.unity.modules.video": "1.0.0",
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
-    "com.unity.modules.xr": "1.0.0"
+    "com.unity.modules.xr": "1.0.0",
+    "com.dbrizov.naughtyattributes": "2.1.1",
+    "com.aarthificial.reanimation": "0.0.2",
+    "com.mrgvsv.pixel-contour": "1.0.3"
   }
 }

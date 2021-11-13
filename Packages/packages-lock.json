@@ -1,11 +1,32 @@
 {
   "dependencies": {
+    "com.aarthificial.reanimation": {
+      "version": "0.0.2",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://package.openupm.com"
+    },
+    "com.dbrizov.naughtyattributes": {
+      "version": "2.1.1",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://package.openupm.com"
+    },
     "com.fluid.behavior-tree": {
       "version": "2.2.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
       "url": "https://registry.npmjs.org"
+    },
+    "com.mrgvsv.pixel-contour": {
+      "version": "1.0.3",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://package.openupm.com"
     },
     "com.unity.2d.animation": {
       "version": "5.0.9",
