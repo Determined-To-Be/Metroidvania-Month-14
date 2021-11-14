@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using MVMXIV;
 
 public class SingletonPattern<T> : MonoBehaviour where T : Component
 {
-    static T instance;
+    private static T instance;
     public static T Instance
     {
         get
@@ -26,7 +23,7 @@ public class SingletonPattern<T> : MonoBehaviour where T : Component
         }
     }
 
-    void Awake()
+    protected virtual void Awake()
     {
         // If there's no T, find it
         if (instance == null)
@@ -46,7 +43,7 @@ public class SingletonPattern<T> : MonoBehaviour where T : Component
         DontDestroyOnLoad(gameObject);
     }
 
-    void OnDestroy()
+    private void OnDestroy()
     {
         if (instance == this)
         {

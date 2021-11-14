@@ -9,8 +9,7 @@ public class LevelLoadTrigger : Trigger
     
     private void Start()
     {
-        _levelController = LevelController.Get();
-        // layersThatCanTrigger = 1 << LayerMask.NameToLayer("Player");
+        _levelController = LevelController.Instance;
         
         events.collisionEnter.AddListener(OnLevelEnter);
         events.collisionExit.AddListener(OnLevelExit);

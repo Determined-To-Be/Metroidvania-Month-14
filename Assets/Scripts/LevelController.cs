@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LevelController : Singleton<LevelController>
+public class LevelController : SingletonPattern<LevelController>
 {
     public event Action<Level, Level> ActiveLevelChanged;
     public event Action<Level> BeforeStartLoad;
