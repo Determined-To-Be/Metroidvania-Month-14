@@ -184,21 +184,68 @@ public class InputManager : SingletonPattern<InputManager>
         return GetButtonUp((int)button);
     }
 
-    public bool GetButtonPressed(int mask, int deltaFrames)
+    /// <summary>
+    /// The method for detecting if a button has just been pressed AND released within the given amount of time.
+    /// To check if multiple buttons were pressed, run this method on each button. Then, logical AND the result
+    /// </summary>
+    /// <param name="button">The button</param>
+    /// <param name="deltaFrames">The number of frames within the input buffer to measure the change across</param>
+    /// <returns><c>true</c> if the button got pressed AND released within the given number of input frames</returns>
+    public bool GetButtonPressed(Buttons button, int deltaFrames)
     {
-        deltaFrames = AssertDeltaFrames(deltaFrames);
-        // TODO
-        return false;
+        int btn = (int)button;
+        // Button must have released on the current input frame to count as a press
+        if (buffer[0].GetButton(btn))
+        {
+            return false;
+        }
+        deltaFrames = AssertDeltaFrames(deltaFrames, 2);
+
+        bool wasReleased = false;
+        int c = deltaFrames;
+        for (int i = 1; i <= deltaFrames; i++, --c)
+        {
+            // We know it is not held, so check if it was
+            if (buffer[i].GetButton(btn))
+            {
+                // It was held so we know that it was released
+                wasReleased = true;
+                continue;
+            }
+
+            // Now that we know it's released, we check if it was unheld
+            if (wasReleased)
+            {
+                // It was initially unheld, so we know it was pressed
+                break;
+            }
+        }
+
+        // c > 0 means the button was pressed
+        return wasReleased && c > 0;
     }
 
-    int AssertDeltaFrames(int deltaFrames)
+    /// <summary>
+    /// The method for detecting if a button has just been pressed AND released.
+    /// To check if multiple buttons were pressed, run this method on each button. Then, logical AND the result
+    /// </summary>
+    /// <param name="button">The button</param>
+    /// <returns><c>true</c> if the button got pressed AND released within the input buffer</returns>
+    public bool GetButtonPressed(Buttons button)
     {
-        bool hasNoChange = deltaFrames < 1;
+        return GetButtonPressed(button, buffer.Length - 1);
+    }
+
+    // TODO doublepress
+
+    int AssertDeltaFrames(int deltaFrames, int minFrame)
+    {
+        bool hasNoChange = deltaFrames < minFrame;
         bool isGreaterThanBufferSize = deltaFrames >= buffer.Length;
         Debug.Assert(hasNoChange || isGreaterThanBufferSize, $"{deltaFrames} delta-frames is outside the range of the input buffer!");
         if (hasNoChange)
         {
-            deltaFrames = 1;
+            deltaFrames = minFrame;
         }
         else if (isGreaterThanBufferSize)
         {
@@ -206,6 +253,11 @@ public class InputManager : SingletonPattern<InputManager>
         }
 
         return deltaFrames;
+    }
+
+    int AssertDeltaFrames(int deltaFrames)
+    {
+        return AssertDeltaFrames(deltaFrames, 1);
     }
 
     class InputFrame
@@ -259,7 +311,7 @@ public class InputManager : SingletonPattern<InputManager>
 
         public bool GetButton(int mask)
         {
-            return (mask & buttons) != 0x00000000;
+            return (mask & buttons) == mask;
         }
 
         int ToInt(bool b)
