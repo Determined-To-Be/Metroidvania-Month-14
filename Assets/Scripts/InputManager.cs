@@ -236,7 +236,13 @@ public class InputManager : SingletonPattern<InputManager>
         return GetButtonPressed(button, buffer.Length - 1);
     }
 
-    // TODO doublepress
+    /// <summary>
+    /// The method for detecting if a button has just been pressed AND released twice within the given amount of time.
+    /// To check if multiple buttons were double pressed, run this method on each button. Then, logical AND the result
+    /// </summary>
+    /// <param name="button">The button</param>
+    /// <param name="deltaFrames">The number of frames within the input buffer to measure the change across</param>
+    /// <returns><c>true</c> if the button got pressed AND released twice within the given number of input frames</returns>
     public bool GetDoublePressed(Buttons button, int deltaFrames)
     {
         int btn = (int)button;
@@ -289,6 +295,17 @@ public class InputManager : SingletonPattern<InputManager>
 
         // i == deltaFrames if we ran through the buffer without it being fully, double pressed
         return i < deltaFrames;
+    }
+
+    /// <summary>
+    /// The method for detecting if a button has just been pressed AND released twice
+    /// To check if multiple buttons were double pressed, run this method on each button. Then, logical AND the result
+    /// </summary>
+    /// <param name="button">The button</param>
+    /// <returns><c>true</c> if the button got pressed AND released twice within the input buffer</returns>
+    public bool GetDoublePressed(Buttons button)
+    {
+        return GetDoublePressed(button, buffer.Length - 1);
     }
 
     int AssertDeltaFrames(int deltaFrames, int minFrame)
