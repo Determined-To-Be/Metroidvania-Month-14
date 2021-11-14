@@ -28,7 +28,7 @@ namespace MVMXIV
 
 public class InputManager : SingletonPattern<InputManager>
 {
-    InputFrame[] buffer = new InputFrame[15]; // Half-second buffer is plenty (assuming 30fps)
+    InputFrame[] buffer = new InputFrame[30]; // Half-second buffer is reasonable (assuming 60fps)
 
     void Start()
     {
@@ -201,28 +201,28 @@ public class InputManager : SingletonPattern<InputManager>
         }
         deltaFrames = AssertDeltaFrames(deltaFrames, 2);
 
-        bool wasReleased = false;
-        int c = deltaFrames;
-        for (int i = 1; i <= deltaFrames; i++, --c)
+        int i = 1;
+        // We know it is not held, so check if it was
+        for (; i <= deltaFrames; i++)
         {
-            // We know it is not held, so check if it was
             if (buffer[i].GetButton(btn))
             {
-                // It was held so we know that it was released
-                wasReleased = true;
-                continue;
+                // It was held, so we know that it was released
+                break;
             }
-
-            // Now that we know it's released, we check if it was unheld
-            if (wasReleased)
+        }
+        // Now that we know it's released, we check if it was unheld
+        for (; i <= deltaFrames; i++)
+        {
+            if (!buffer[i].GetButton(btn))
             {
                 // It was initially unheld, so we know it was pressed
                 break;
             }
         }
 
-        // c > 0 means the button was pressed
-        return wasReleased && c > 0;
+        // i == deltaFrames if we ran through the buffer without it being fully pressed
+        return i < deltaFrames;
     }
 
     /// <summary>
@@ -236,7 +236,77 @@ public class InputManager : SingletonPattern<InputManager>
         return GetButtonPressed(button, buffer.Length - 1);
     }
 
-    // TODO doublepress
+    /// <summary>
+    /// The method for detecting if a button has just been pressed AND released twice within the given amount of time.
+    /// To check if multiple buttons were double pressed, run this method on each button. Then, logical AND the result
+    /// </summary>
+    /// <param name="button">The button</param>
+    /// <param name="deltaFrames">The number of frames within the input buffer to measure the change across</param>
+    /// <returns><c>true</c> if the button got pressed AND released twice within the given number of input frames</returns>
+    public bool GetDoublePressed(Buttons button, int deltaFrames)
+    {
+        int btn = (int)button;
+        // Button must have released on the current input frame to count as a press
+        if (buffer[0].GetButton(btn))
+        {
+            return false;
+        }
+        deltaFrames = AssertDeltaFrames(deltaFrames, 4);
+
+        int i = 1;
+        // We know it is not held, so check if it was
+        for (; i <= deltaFrames; i++)
+        {
+            if (buffer[i].GetButton(btn))
+            {
+                // It was held, so we know that it was released once
+                break;
+            }
+        }
+        // Now that we know it's released, we check if it was unheld
+        for (; i <= deltaFrames; i++)
+        {
+            if (!buffer[i].GetButton(btn))
+            {
+                // It was initially unheld, so we know it was pressed once
+                break;
+            }
+        }
+        // Check if it was released a second time
+        // (This is just the same two for-loops above repeated again)
+        // TODO Make this pair of loops a local method since it's used 3 times?
+        for (; i <= deltaFrames; i++)
+        {
+            if (buffer[i].GetButton(btn))
+            {
+                // It was held, so we know that it was released twice
+                break;
+            }
+        }
+        // Check if it was pressed a second time
+        for (; i <= deltaFrames; i++)
+        {
+            if (!buffer[i].GetButton(btn))
+            {
+                // It was initially unheld, so we know it was pressed twice
+                break;
+            }
+        }
+
+        // i == deltaFrames if we ran through the buffer without it being fully, double pressed
+        return i < deltaFrames;
+    }
+
+    /// <summary>
+    /// The method for detecting if a button has just been pressed AND released twice
+    /// To check if multiple buttons were double pressed, run this method on each button. Then, logical AND the result
+    /// </summary>
+    /// <param name="button">The button</param>
+    /// <returns><c>true</c> if the button got pressed AND released twice within the input buffer</returns>
+    public bool GetDoublePressed(Buttons button)
+    {
+        return GetDoublePressed(button, buffer.Length - 1);
+    }
 
     int AssertDeltaFrames(int deltaFrames, int minFrame)
     {
