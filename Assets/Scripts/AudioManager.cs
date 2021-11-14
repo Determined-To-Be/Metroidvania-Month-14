@@ -22,7 +22,7 @@ public class AudioManager : SingletonPattern<AudioManager>
         mixer = Resources.Load<AudioMixer>("Sounds/Master");
         samples = Resources.LoadAll<AudioClip>("Sounds");
         channels = new AudioSource[System.Enum.GetNames(typeof(Channel)).Length];
-        channelNames = Channel.GetNames(typeof(Channel));
+        channelNames = System.Enum.GetNames(typeof(Channel));
         for (int chan = 0; chan < channels.Length; chan++)
         {
             channels[chan] = gameObject.AddComponent<AudioSource>();
