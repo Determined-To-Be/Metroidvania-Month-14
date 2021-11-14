@@ -281,7 +281,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e717f861561cb4341926547df4c9fe38, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
@@ -298,12 +298,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 336462426}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.275, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0.275, y: 0.5, z: 0}
   m_LocalScale: {x: 0.55, y: 0.9, z: 1}
-  m_Children:
-  - {fileID: 727003345}
+  m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &336462429
 Rigidbody2D:
@@ -339,7 +338,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.5, y: 0.435}
+  m_Offset: {x: -0.5, y: 0.435}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -364,6 +363,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 281fe7be44a0ac54faeb7a955b8d1b28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coyoteTime: 1
+  moveAcceleration: 0.6
+  groundDampingMoving: 0.4
+  groundDampingTurning: 0.8
+  groundDampingStopping: 0.8
+  airDampingMoving: 0.2
+  airDampingTurning: 0.95
+  airDampingStopping: 0.85
+  jumpVelocity: 10
+  isGrounded: 1
+  groundedAngle: 45
+  jumpBufferTime: 0.5
+  jumpBuffered: 0
+  knockback: 15
+  stopInput: 0
 --- !u!114 &336462432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -595,7 +609,7 @@ Transform:
   - {fileID: 1157145372}
   - {fileID: 1033251835}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &727003342
 GameObject:
@@ -676,11 +690,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 727003342}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0.5555556, z: -5}
-  m_LocalScale: {x: 1.8181819, y: 1.1111112, z: 1}
+  m_LocalPosition: {x: 0, y: 2.5, z: -7.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 336462428}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &727003346
 MonoBehaviour:
