@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eda1dda313832174c9d8162a9ca0197b, type: 3}
+  m_Name: Room 2
+  m_EditorClassIdentifier: 
+  scene: Room 2
+  levelsToPreload:
+  - {fileID: 11400000, guid: 706e0480f0eaff94b9180da439dd3400, type: 2}
+  - {fileID: 11400000, guid: e7e1d706eeab9d64d89a1e6d00040196, type: 2}
+  isGameplayLevel: 1
+  isPersistent: 0
