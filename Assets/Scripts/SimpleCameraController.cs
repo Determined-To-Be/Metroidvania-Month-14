@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 #endif
 
 using UnityEngine;
+using MVMXIV;
 
 namespace UnityTemplateProjects
 {
