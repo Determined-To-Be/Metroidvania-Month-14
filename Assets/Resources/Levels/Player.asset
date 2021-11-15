@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: Player
   m_EditorClassIdentifier: 
   sceneName: Player
-  levelsToPreload: []
-  isGameplayLevel: 0
+  neighbors: []
   isPersistent: 1

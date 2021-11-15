@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: Room 2
   m_EditorClassIdentifier: 
   sceneName: Room 2
-  levelsToPreload:
+  neighbors:
+  - {fileID: 11400000, guid: cf3a71e650b5b86449bab9ca859749bf, type: 2}
   - {fileID: 11400000, guid: 706e0480f0eaff94b9180da439dd3400, type: 2}
-  - {fileID: 11400000, guid: e7e1d706eeab9d64d89a1e6d00040196, type: 2}
-  isGameplayLevel: 1
   isPersistent: 0

@@ -4,10 +4,11 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LevelController : SingletonPattern<LevelController>
+/// <summary>
+/// Provides logic for loading and unloading scenes from their Level data.
+/// </summary>
+public class LevelManager : SingletonPattern<LevelManager>
 {
-    [SerializeField] private bool showDebugState;
-    
     private Dictionary<string, Level> _sceneNamesToLevels = new Dictionary<string, Level>();
     private LinkedList<Level> _activeLevels = new LinkedList<Level>();
     public Level ActiveLevel => _activeLevels.Count > 0 ? _activeLevels.First.Value : null;
@@ -56,30 +57,25 @@ public class LevelController : SingletonPattern<LevelController>
         if (oldLevel != ActiveLevel)
             CustomSceneManager.SetActiveScene(level.sceneName);
     }
-
-    #region Loading Levels
-
+    
     public IEnumerator LoadLevel(Level level)
     {
         yield return CustomSceneManager.LoadAdditive(level.sceneName);
 
         AddActiveLevel(level);
 
-        foreach (var neighbor in level.levelsToPreload)
+        foreach (Level neighbor in level.neighbors)
             yield return CustomSceneManager.LoadAdditive(neighbor.sceneName);
     }
     
-    #endregion
-
-    #region Unloading Levels
-
+    
     public IEnumerator UnloadLevel(Level level)
     {
         yield return TryToUnload(level);
 
         RemoveActiveLevel(level);
 
-        foreach (var levelNeighbor in level.levelsToPreload)
+        foreach (var levelNeighbor in level.neighbors)
             yield return TryToUnload(levelNeighbor);
     }
 
@@ -101,24 +97,10 @@ public class LevelController : SingletonPattern<LevelController>
             if (level == activeLevel)
                 return true;
 
-            if (activeLevel.levelsToPreload.Any(neighborLevel => level == neighborLevel))
+            if (activeLevel.neighbors.Any(neighborLevel => level == neighborLevel))
                 return true;
         }
         
         return false;
-    }
-    
-    #endregion
-    
-    private void OnGUI()
-    {
-        if (showDebugState)
-        {
-            GUILayout.Label("Active Levels: ");
-            foreach (var level in _activeLevels)
-                GUILayout.Label(level.name);
-        
-            GUILayout.Label("Active Level: " + ActiveLevel);    
-        }
     }
 }
