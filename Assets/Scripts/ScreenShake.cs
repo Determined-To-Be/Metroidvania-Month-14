@@ -20,13 +20,13 @@ public class ScreenShake : MonoBehaviour
 	public void Shake(float intensity, float duration)
 	{
 		bool hasNoIntensity = intensity <= 0.0f;
-		Debug.Assert(hasNoIntensity, $"Intensity {intensity} <= 0!");
+		Debug.Assert(!hasNoIntensity, $"Intensity {intensity} <= 0!");
 		if (hasNoIntensity)
 		{
 			intensity = 1.0f;
 		}
-		bool hasNoDuration = duration <= 0.0f;
-		Debug.Assert(hasNoDuration, $"Duration {duration} is <= 0!");
+		bool hasDuration = duration > 0.0f;
+		Debug.Assert(!hasDuration, $"Duration {duration} is <= 0!");
 		if (duration < 0.0f)
 		{
 			duration = -duration;
