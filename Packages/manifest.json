@@ -12,6 +12,7 @@
       "url": "https://package.openupm.com",
       "scopes": [
         "com.aarthificial.reanimation",
+        "com.av.smart-hierarchy",
         "com.dbrizov.naughtyattributes",
         "com.mrgvsv.pixel-contour",
         "com.openupm"
@@ -68,6 +69,7 @@
     "com.unity.modules.xr": "1.0.0",
     "com.dbrizov.naughtyattributes": "2.1.1",
     "com.aarthificial.reanimation": "0.0.2",
-    "com.mrgvsv.pixel-contour": "1.0.3"
+    "com.mrgvsv.pixel-contour": "1.0.3",
+    "com.av.smart-hierarchy": "0.3.1"
   }
 }

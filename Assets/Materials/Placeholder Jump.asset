@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02f1da0b6abdb7d45aa4315eccab639b, type: 3}
+  m_Name: Placeholder Jump
+  m_EditorClassIdentifier: 
+  cels:
+  - sprite: {fileID: 2782824059716639558, guid: 5626fd33d36a9e846b5d717921303ddc, type: 3}
+    drivers:
+      keys: []
+      values: 
+  - sprite: {fileID: 6591383909546899710, guid: 5626fd33d36a9e846b5d717921303ddc, type: 3}
+    drivers:
+      keys: []
+      values: 
+  - sprite: {fileID: -8079436571449929653, guid: 5626fd33d36a9e846b5d717921303ddc, type: 3}
+    drivers:
+      keys: []
+      values: 
+  - sprite: {fileID: 1367356644778700540, guid: 5626fd33d36a9e846b5d717921303ddc, type: 3}
+    drivers:
+      keys: []
+      values: 
+  controlDriver:
+    name: Jump
+    autoIncrement: 1
+    percentageBased: 0
+    guid: a9c749c9-24c7-4008-9cdb-ecf62afa602c
+  drivers:
+    keys: []
+    values: 

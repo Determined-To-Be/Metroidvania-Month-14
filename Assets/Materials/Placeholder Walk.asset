@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02f1da0b6abdb7d45aa4315eccab639b, type: 3}
+  m_Name: Placeholder Walk
+  m_EditorClassIdentifier: 
+  cels:
+  - sprite: {fileID: -9189215194560492720, guid: 5626fd33d36a9e846b5d717921303ddc, type: 3}
+    drivers:
+      keys: []
+      values: 
+  - sprite: {fileID: -3447604161102167502, guid: 5626fd33d36a9e846b5d717921303ddc, type: 3}
+    drivers:
+      keys: []
+      values: 
+  - sprite: {fileID: -8591885725494903098, guid: 5626fd33d36a9e846b5d717921303ddc, type: 3}
+    drivers:
+      keys: []
+      values: 
+  - sprite: {fileID: 5250566795894291339, guid: 5626fd33d36a9e846b5d717921303ddc, type: 3}
+    drivers:
+      keys: []
+      values: 
+  controlDriver:
+    name: Walk
+    autoIncrement: 1
+    percentageBased: 0
+    guid: 0819123e-a29d-4e6c-aebc-e50047879fcb
+  drivers:
+    keys: []
+    values: 
