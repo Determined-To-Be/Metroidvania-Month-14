@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eda1dda313832174c9d8162a9ca0197b, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
-  scene: Player
+  sceneName: Player
   levelsToPreload: []
   isGameplayLevel: 0
   isPersistent: 1

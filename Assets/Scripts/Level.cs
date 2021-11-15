@@ -6,7 +6,7 @@ using UnityEngine;
 public class Level : ScriptableObject
 {
     [SerializeField, Scene] 
-    public string scene;
+    public string sceneName;
     
     [SerializeField, Tooltip("Levels in this list will be loaded alongside the main level, to make gameplay seamless")] 
     public Level[] levelsToPreload = Array.Empty<Level>();

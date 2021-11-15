@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,47 +6,25 @@ using UnityEngine.SceneManagement;
 
 public class LevelController : SingletonPattern<LevelController>
 {
-    public event Action<Level, Level> ActiveLevelChanged;
-    public event Action<Level> BeforeStartLoad;
-    public event Action<Level> BeforeStartUnload;
-    
-    private LinkedList<Level> _activeLevels = new LinkedList<Level>();
-    private readonly List<Level> _loadedLevels = new List<Level>();
-    private readonly List<Scene> _loadingScenes = new List<Scene>();
-
     [SerializeField] private bool showDebugState;
     
-    public IEnumerable<Level> ActiveLevels => _activeLevels;
-    public Level ActiveLevel => _activeLevels.Count > 0 ? _activeLevels.First.Value : null;
     private Dictionary<string, Level> _sceneNamesToLevels = new Dictionary<string, Level>();
-    
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnLoaded;
-        SceneManager.sceneUnloaded += OnUnloaded;
-        ActiveLevelChanged += OnActiveChanged;
-    }
+    private LinkedList<Level> _activeLevels = new LinkedList<Level>();
+    public Level ActiveLevel => _activeLevels.Count > 0 ? _activeLevels.First.Value : null;
 
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnLoaded;
-        SceneManager.sceneUnloaded -= OnUnloaded;
-        ActiveLevelChanged -= OnActiveChanged;
-    }
-    
     protected override void Awake()
     {
         base.Awake();
         
         SetupLevelDictionary();
         SetupActiveLevel();
-        SetupLoadedLevels();
     }
 
     private void SetupLevelDictionary()
     {
-        Level[] levels = Resources.LoadAll<Level>("Levels");
-        _sceneNamesToLevels = levels.ToDictionary(level => level.scene);
+        _sceneNamesToLevels = Resources
+            .LoadAll<Level>("Levels")
+            .ToDictionary(level => level.sceneName);
     }
     
     public Level GetLevel(string sceneName)
@@ -62,46 +40,59 @@ public class LevelController : SingletonPattern<LevelController>
 
     private void AddActiveLevel(Level level)
     {
-        if (_activeLevels.Contains(level) || level.isPersistent) 
-            return;
-
-        var oldActiveLevel = ActiveLevel;
-        _activeLevels.AddFirst(level);
-        
-        if (ActiveLevel == level)
-            ActiveLevelChanged?.Invoke(oldActiveLevel, ActiveLevel);
+        if (!_activeLevels.Contains(level) && !level.isPersistent)
+        {
+            _activeLevels.AddFirst(level);
+            CustomSceneManager.SetActiveScene(ActiveLevel.sceneName);    
+        }
     }
     
     private void RemoveActiveLevel(Level level)
     {
-        if (!_activeLevels.Contains(level)) 
-            return;
-
-        var oldActiveLevel = ActiveLevel;
-        _activeLevels.Remove(level);
+        Level oldLevel = ActiveLevel;
         
-        if (oldActiveLevel != ActiveLevel)
-            ActiveLevelChanged?.Invoke(oldActiveLevel, ActiveLevel);
+        _activeLevels.Remove(level);
+
+        if (oldLevel != ActiveLevel)
+            CustomSceneManager.SetActiveScene(level.sceneName);
     }
 
-    private void SetupLoadedLevels()
+    #region Loading Levels
+
+    public IEnumerator LoadLevel(Level level)
     {
-        for (int i = 0; i < SceneManager.sceneCount; i++)
-        {
-            var level = GetLevel(SceneManager.GetSceneAt(i).name);
-            
-            if (LevelShouldBeLoaded(level))
-                _loadedLevels.Add(level);
-        }
+        yield return CustomSceneManager.LoadAdditive(level.sceneName);
+
+        AddActiveLevel(level);
+
+        foreach (var neighbor in level.levelsToPreload)
+            yield return CustomSceneManager.LoadAdditive(neighbor.sceneName);
+    }
+    
+    #endregion
+
+    #region Unloading Levels
+
+    public IEnumerator UnloadLevel(Level level)
+    {
+        yield return TryToUnload(level);
+
+        RemoveActiveLevel(level);
+
+        foreach (var levelNeighbor in level.levelsToPreload)
+            yield return TryToUnload(levelNeighbor);
+    }
+
+    private IEnumerator TryToUnload(Level level)
+    {
+        if (!LevelShouldBeLoaded(level))
+            yield return CustomSceneManager.UnloadAdditive(level.sceneName);
     }
     
     private bool LevelShouldBeLoaded(Level level)
     {
-        // Ensure that there is always one scene loaded
-        if (_activeLevels.Count < 1)
-            return true;
-        
-        if (level.isPersistent)
+        // Ensure that there is always one scene loaded and persistent levels remain loaded.
+        if (_activeLevels.Count < 1 || level.isPersistent)
             return true;
         
         // Active levels and their neighbors should always be loaded.
@@ -116,135 +107,15 @@ public class LevelController : SingletonPattern<LevelController>
         
         return false;
     }
-
-    private void OnLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (ActiveLevel != null && ActiveLevel.scene == scene.name)
-            SceneManager.SetActiveScene(scene);
-        
-        _loadingScenes.Remove(scene);
-    }
-
-    private void OnUnloaded(Scene scene)
-    {
-        _loadingScenes.Remove(scene);
-    }
-
-    private void OnActiveChanged(Level oldLevel, Level newLevel)
-    {
-        if (newLevel == null)
-            return;
-        
-        if (SceneManager.GetSceneByName(ActiveLevel.scene).isLoaded)
-            SceneManager.SetActiveScene(SceneManager.GetSceneByName(newLevel.scene));
-    }
-
-    public void LoadLevel(string sceneName, Action onLoaded = null)
-    {
-        LoadLevel(GetLevel(sceneName), onLoaded);
-    }
     
-    public void UnloadLevel(string sceneName)
-    {
-        UnloadLevel(GetLevel(sceneName));
-    }
+    #endregion
     
-    public void LoadLevel(Level level, Action onLoaded = null)
-    {
-        AddActiveLevel(level);
-        
-        LoadAdditive(level, onLoaded);
-
-        foreach (var neighbor in level.levelsToPreload)
-            LoadAdditive(neighbor);
-    }
-
-    public void UnloadLevel(Level level)
-    {
-        RemoveActiveLevel(level);
-
-        TryToUnload(level);
-
-        foreach (var levelNeighbor in level.levelsToPreload)
-            TryToUnload(levelNeighbor);
-    }
-    
-    private void LoadAdditive(Level level, Action onLoaded = null)
-    {
-        if (level == null)
-            return;
-        
-        if (!_loadedLevels.Contains(level))
-        {
-            BeforeStartLoad?.Invoke(level);
-            
-            var op = SceneManager.LoadSceneAsync(level.scene, LoadSceneMode.Additive);
-            
-            if (onLoaded != null)
-                op.completed += operation => onLoaded.Invoke();
-
-            _loadingScenes.Add(SceneManager.GetSceneByName(level.scene));
-        }
-        
-        if (!_loadedLevels.Contains(level))
-            _loadedLevels.Add(level);
-    }
-    
-    private static bool IsLoaded(Level level)
-    {
-        return SceneManager.GetSceneByName(level.scene).IsValid();
-    }
-    
-    private void TryToUnload(Level level)
-    {
-        if (!LevelShouldBeLoaded(level))
-            UnloadAdditive(level);
-    }
-    
-    private void UnloadAdditive(Level level)
-    {
-        if (level == null)
-            return;
-        
-        if (IsLoaded(level))
-        {
-            BeforeStartUnload?.Invoke(level);
-
-            SceneManager.UnloadSceneAsync(level.scene);
-            _loadingScenes.Add(SceneManager.GetSceneByName(level.scene));
-        }
-        
-        if (_loadedLevels.Contains(level))
-            _loadedLevels.Remove(level);
-    }
-    
-    public void UnloadAll()
-    {
-        _activeLevels.Clear();
-
-        Level[] levels = _loadedLevels.ToArray();
-        
-        foreach (var loadedLevel in levels)
-        {
-            if (!loadedLevel.isPersistent)
-                UnloadAdditive(loadedLevel);
-        }
-    }
-
     private void OnGUI()
     {
         if (showDebugState)
         {
-            GUILayout.Label("Loaded Levels: ");
-            foreach (var level in _loadedLevels)
-                GUILayout.Label(level.name);
-        
             GUILayout.Label("Active Levels: ");
             foreach (var level in _activeLevels)
-                GUILayout.Label(level.name);
-        
-            GUILayout.Label("Loading Levels");
-            foreach (var level in _loadingScenes)
                 GUILayout.Label(level.name);
         
             GUILayout.Label("Active Level: " + ActiveLevel);    

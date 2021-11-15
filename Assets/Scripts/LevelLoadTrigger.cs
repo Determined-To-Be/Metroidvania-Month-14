@@ -23,12 +23,12 @@ public class LevelLoadTrigger : Trigger
 
     private void OnLevelExit(GameObject obj)
     {
-        _levelController.UnloadLevel(currentLevel);
+        StartCoroutine(_levelController.UnloadLevel(currentLevel));
     }
 
     private void OnLevelEnter(GameObject obj)
     {
-        _levelController.LoadLevel(currentLevel);
+        StartCoroutine(_levelController.LoadLevel(currentLevel));
     }
 
     public void GenerateCollider()
