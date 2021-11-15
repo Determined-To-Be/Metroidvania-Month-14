@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Room 1
   m_EditorClassIdentifier: 
   sceneName: Room 1
+  isPersistent: 0
   neighbors:
   - {fileID: 11400000, guid: 10fb3569b24085647830133e20fd3910, type: 2}
-  isPersistent: 0
