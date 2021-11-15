@@ -312,7 +312,7 @@ public class InputManager : SingletonPattern<InputManager>
     {
         bool hasNoChange = deltaFrames < minFrame;
         bool isGreaterThanBufferSize = deltaFrames >= buffer.Length;
-        Debug.Assert(hasNoChange || isGreaterThanBufferSize, $"{deltaFrames} delta-frames is outside the range of the input buffer!");
+        Debug.Assert(!(hasNoChange && isGreaterThanBufferSize), $"{deltaFrames} delta-frames is outside the range of the input buffer!");
         if (hasNoChange)
         {
             deltaFrames = minFrame;
@@ -370,7 +370,7 @@ public class InputManager : SingletonPattern<InputManager>
         public float GetAxis(int i)
         {
             bool isInvalid = i < 0 || i >= axis.Length;
-            Debug.Assert(isInvalid, $"{i} is not a valid input axis!");
+            Debug.Assert(!isInvalid, $"{i} is not a valid input axis!");
             if (isInvalid)
             {
                 return 0.0f;
