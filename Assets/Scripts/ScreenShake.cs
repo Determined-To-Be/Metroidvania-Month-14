@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MVMXIV;
 
-public class ScreenShake : SingletonPattern<ScreenShake>
+public class ScreenShake : MonoBehaviour
 {
 	Vector3 initPos;
 
