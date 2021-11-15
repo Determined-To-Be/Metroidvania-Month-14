@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Player
   m_EditorClassIdentifier: 
   sceneName: Player
-  neighbors: []
   isPersistent: 1
+  neighbors: []
