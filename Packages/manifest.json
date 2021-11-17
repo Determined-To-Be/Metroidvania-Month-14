@@ -13,6 +13,7 @@
       "scopes": [
         "com.aarthificial.reanimation",
         "com.av.smart-hierarchy",
+        "com.cammin.ldtkunity",
         "com.dbrizov.naughtyattributes",
         "com.mrgvsv.pixel-contour",
         "com.openupm"
@@ -70,6 +71,7 @@
     "com.dbrizov.naughtyattributes": "2.1.1",
     "com.aarthificial.reanimation": "0.0.2",
     "com.mrgvsv.pixel-contour": "1.0.3",
-    "com.av.smart-hierarchy": "0.3.1"
+    "com.av.smart-hierarchy": "0.3.1",
+    "com.cammin.ldtkunity": "2.1.7"
   }
 }

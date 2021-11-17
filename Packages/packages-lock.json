@@ -14,6 +14,15 @@
       "dependencies": {},
       "url": "https://package.openupm.com"
     },
+    "com.cammin.ldtkunity": {
+      "version": "2.1.7",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.nuget.newtonsoft-json": "2.0.2"
+      },
+      "url": "https://package.openupm.com"
+    },
     "com.dbrizov.naughtyattributes": {
       "version": "2.1.1",
       "depth": 0,
@@ -164,7 +173,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.nuget.newtonsoft-json": {
-      "version": "2.0.0",
+      "version": "2.0.2",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
