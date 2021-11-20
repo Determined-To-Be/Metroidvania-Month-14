@@ -13,19 +13,35 @@ MonoBehaviour:
   m_Name: Placeholder Walk
   m_EditorClassIdentifier: 
   cels:
-  - sprite: {fileID: -9189215194560492720, guid: 5626fd33d36a9e846b5d717921303ddc, type: 3}
+  - sprite: {fileID: -589479829849459968, guid: badcc32eb2061f44c9b4b65420bf8c6a, type: 3}
     drivers:
       keys: []
       values: 
-  - sprite: {fileID: -3447604161102167502, guid: 5626fd33d36a9e846b5d717921303ddc, type: 3}
+  - sprite: {fileID: -2225303593433192470, guid: badcc32eb2061f44c9b4b65420bf8c6a, type: 3}
     drivers:
       keys: []
       values: 
-  - sprite: {fileID: -8591885725494903098, guid: 5626fd33d36a9e846b5d717921303ddc, type: 3}
+  - sprite: {fileID: 711731054339644605, guid: badcc32eb2061f44c9b4b65420bf8c6a, type: 3}
     drivers:
       keys: []
       values: 
-  - sprite: {fileID: 5250566795894291339, guid: 5626fd33d36a9e846b5d717921303ddc, type: 3}
+  - sprite: {fileID: 8827041205860659437, guid: badcc32eb2061f44c9b4b65420bf8c6a, type: 3}
+    drivers:
+      keys: []
+      values: 
+  - sprite: {fileID: -4531196692211296701, guid: badcc32eb2061f44c9b4b65420bf8c6a, type: 3}
+    drivers:
+      keys: []
+      values: 
+  - sprite: {fileID: -1002207024202496282, guid: badcc32eb2061f44c9b4b65420bf8c6a, type: 3}
+    drivers:
+      keys: []
+      values: 
+  - sprite: {fileID: -3633421932862571679, guid: badcc32eb2061f44c9b4b65420bf8c6a, type: 3}
+    drivers:
+      keys: []
+      values: 
+  - sprite: {fileID: -7809123221476925388, guid: badcc32eb2061f44c9b4b65420bf8c6a, type: 3}
     drivers:
       keys: []
       values: 
